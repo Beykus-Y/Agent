@@ -1,0 +1,28 @@
+[
+    {
+      "name": "trigger_pro_model_processing",
+      "description": "Вызвать эту функцию, если сообщение пользователя в группе требует ответа или выполнения сложного действия основной моделью. Передай оригинальный ввод пользователя.",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "user_id": { "type": "INTEGER", "description": "ID пользователя, отправившего сообщение." },
+          "chat_id": { "type": "INTEGER", "description": "ID чата, где было отправлено сообщение." },
+          "user_input": { "type": "STRING", "description": "Полный текст сообщения пользователя." }
+        },
+        "required": ["user_id", "chat_id", "user_input"]
+      }
+    },
+    {
+      "name": "remember_user_info",
+      "description": "Сохранить или обновить важную информацию (заметку) о пользователе. Используй четкую, короткую категорию.",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "user_id": { "type": "INTEGER", "description": "ID пользователя, о котором информация." },
+          "info_category": { "type": "STRING", "description": "Категория информации (например, 'имя', 'хобби')." },
+          "info_value": { "type": "STRING", "description": "Значение информации." }
+        },
+        "required": ["info_category", "info_value"]
+      }
+    }
+  ]

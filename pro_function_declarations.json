@@ -1,0 +1,183 @@
+[
+  {
+    "name": "get_current_weather",
+    "description": "Получить текущие погодные условия для указанного местоположения.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "location": {
+          "type": "STRING",
+          "description": "Город и штат/страна, например, 'Сан-Франциско, Калифорния' или 'Токио'"
+        },
+        "unit": {
+          "type": "STRING",
+          "description": "Единица измерения температуры (celsius или fahrenheit)",
+          "enum": ["celsius", "fahrenheit"]
+        }
+      },
+      "required": ["location"]
+    }
+  },
+  {
+    "name": "get_stock_price",
+    "description": "Получить текущую цену акции для заданного тикера.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "ticker_symbol": {
+          "type": "STRING",
+          "description": "Биржевой тикер символа, например, 'GOOGL' или 'AAPL'"
+        }
+      },
+      "required": ["ticker_symbol"]
+    }
+  },
+  {
+    "name": "send_telegram_message",
+    "description": "Отправить сообщение пользователю через Telegram.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "chat_id": {
+          "type": "INTEGER",
+          "description": "Указать ID чата, через который будет отправлено сообщение"
+        },
+        "text": {
+          "type": "STRING",
+          "description": "Текст сообщения для отправки в Telegram. Обязательно для заполнения."
+        },
+        "delay_seconds": {
+          "type": "INTEGER",
+          "description": "Задержка в секундах перед отправкой сообщения. По умолчанию 0 (отправка немедленно)."
+        }
+      },
+      "required": ["chat_id", "text"]
+    }
+  },
+  {
+    "name": "read_file_from_env",
+    "description": "Прочитать содержимое файла из ИЗОЛИРОВАННОГО окружения чата (/app/env/{chat_id}).",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "chat_id": { "type": "INTEGER", "description": "ID текущего чата Telegram." },
+        "filename": { "type": "STRING", "description": "Имя файла для чтения (относительно директории чата)." }
+      },
+      "required": ["chat_id", "filename"]
+    }
+  },
+  {
+    "name": "write_file_to_env",
+    "description": "Записать текст в файл в ИЗОЛИРОВАННОМ окружении чата (/app/env/{chat_id}). Перезаписывает файл.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "chat_id": { "type": "INTEGER", "description": "ID текущего чата Telegram." },
+        "filename": { "type": "STRING", "description": "Имя файла для записи (относительно директории чата)." },
+        "content": { "type": "STRING", "description": "Текст для записи." }
+      },
+      "required": ["chat_id", "filename", "content"]
+    }
+  },
+  {
+    "name": "execute_python_script_in_env",
+    "description": "Выполнить Python-скрипт из ИЗОЛИРОВАННОГО окружения чата (/app/env/{chat_id}) и вернуть вывод.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "chat_id": { "type": "INTEGER", "description": "ID текущего чата Telegram." },
+        "filename": { "type": "STRING", "description": "Имя Python-скрипта (.py) для выполнения (относительно директории чата)." }
+      },
+      "required": ["chat_id", "filename"]
+    }
+  },
+  {
+    "name": "create_file_in_env",
+    "description": "Создать новый пустой файл в ИЗОЛИРОВАННОМ окружении чата (/app/env/{chat_id}).",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "chat_id": { "type": "INTEGER", "description": "ID текущего чата Telegram." },
+        "filename": { "type": "STRING", "description": "Имя файла для создания (относительно директории чата)." }
+      },
+      "required": ["chat_id", "filename"]
+    }
+  },
+  {
+    "name": "execute_terminal_command_in_env",
+    "description": "Выполнить команду в терминале внутри ИЗОЛИРОВАННОГО окружения чата (/app/env/{chat_id}). ВНИМАНИЕ: Риски безопасности!",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "chat_id": { "type": "INTEGER", "description": "ID текущего чата Telegram, в окружении которого выполнить команду." },
+        "command": { "type": "STRING", "description": "Команда для выполнения в терминале." }
+      },
+      "required": ["chat_id", "command"]
+    }
+  },
+  {
+    "name": "edit_file_content",
+    "description": "Редактировать файл в ИЗОЛИРОВАННОМ окружении чата (/app/env/{chat_id}), заменив текст.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "chat_id": { "type": "INTEGER", "description": "ID текущего чата Telegram." },
+        "filename": { "type": "STRING", "description": "Имя файла для редактирования." },
+        "search_string": { "type": "STRING", "description": "Строка для поиска." },
+        "replace_string": { "type": "STRING", "description": "Строка для замены." }
+      },
+      "required": ["chat_id", "filename", "search_string", "replace_string"]
+    }
+  },
+  {
+    "name": "replace_code_block_ast",
+    "description": "Заменить функцию/класс в Python-файле в ИЗОЛИРОВАННОМ окружении чата (/app/env/{chat_id}) через AST.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "chat_id": { "type": "INTEGER", "description": "ID текущего чата Telegram." },
+        "filename": { "type": "STRING", "description": "Имя Python-файла (.py)." },
+        "block_type": { "type": "STRING", "enum": ["function", "class"] },
+        "block_name": { "type": "STRING", "description": "Имя заменяемой функции/класса." },
+        "new_code_block": { "type": "STRING", "description": "Новый код блока." }
+      },
+      "required": ["chat_id", "filename", "block_type", "block_name", "new_code_block"]
+    }
+  },
+  {
+    "name": "edit_json_file",
+    "description": "Редактировать JSON-файл в ИЗОЛИРОВАННОМ окружении чата (/app/env/{chat_id}) по пути.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "chat_id": { "type": "INTEGER", "description": "ID текущего чата Telegram." },
+        "filename": { "type": "STRING", "description": "Имя JSON-файла." },
+        "json_path": { "type": "STRING", "description": "Путь к элементу (dot-нотация)." },
+        "new_value_json": { "type": "STRING", "description": "Новое значение (JSON-строка)." }
+      },
+      "required": ["chat_id", "filename", "json_path", "new_value_json"]
+    }
+  },
+  {
+    "name": "remember_user_info",
+    "description": "Сохранить или обновить важную информацию (заметку) о пользователе. Используй четкую, короткую категорию (например, 'имя', 'хобби', 'город', 'предпочтение_кофе'). Если такая категория уже есть, значение будет перезаписано.",
+    "parameters": {
+      "type": "OBJECT",
+      "properties": {
+        "user_id": {
+          "type": "INTEGER",
+          "description": "Уникальный идентификатор пользователя Telegram, о котором нужно сохранить информацию."
+        },
+        "info_category": {
+          "type": "STRING",
+          "description": "Категория сохраняемой информации (ключ). Должна быть краткой и осмысленной (например, 'имя', 'хобби', 'цель_использования_бота')."
+        },
+        "info_value": {
+          "type": "STRING",
+          "description": "Значение сохраняемой информации."
+        }
+      },
+      "required": ["info_category", "info_value"]
+    }
+  }
+]
